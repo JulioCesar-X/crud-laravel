@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Player;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PlayersExport;
+use App\Imports\PlayersImport;
+use App\Http\Requests\CreateValidationRequest;
+
+
 
 class PlayerController extends Controller
 {
@@ -110,5 +118,16 @@ class PlayerController extends Controller
     {
         $player->delete();
         return redirect()->route('players')->with('successo', 'Player excluído com sucesso!');
+    }
+
+    public function export()
+    {
+        return Excel::download(new PlayersExport, 'players.csv', \Maatwebsite\Excel\Excel::CSV);
+
+    }
+    public function import()
+    {
+        Excel::import(new PlayersImport, request()->file('your_file'));
+        return redirect('/')->with('success', 'All good!');
     }
 }

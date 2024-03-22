@@ -40,9 +40,11 @@
             <a href="{{ route('players.edit',['player' => $player->id]) }}">Editar</a>
         </button>
         <form method="POST" action="{{ route('players.destroy', ['player' => $player->id]) }}">
-             @csrf
-             @method('DELETE')
-            <button type="submit" class="mt-2 mb-5 btn-pl btn-primary" onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Deletar</button>
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="mt-2 mb-5 btn-pl btn-danger"
+                onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Deletar
+            </button>
         </form>
     </div>
 </form>

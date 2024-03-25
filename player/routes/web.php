@@ -43,6 +43,6 @@ Route::delete('/players/{player}', 'PlayerController@destroy')->name('players.de
 //rota para salvar dados em csv
 Route::get('/export-players', 'PlayerController@export')->name('players.save');
 
-//rota para importar csv
-Route::post('/import-players/{path}', 'PlayerController@import')->name('players.load');
+// //rota para importar csv
+// dd(Route::post('/import-players/{path}', 'PlayerController@import')->name('players.load'));
 

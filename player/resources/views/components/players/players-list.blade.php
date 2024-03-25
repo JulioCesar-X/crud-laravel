@@ -42,8 +42,8 @@
 <div class="btn-form btn-primary">
     {{ $players->links() }}
     <button type="button" class="btn-pl btn-primary"><a href="{{ route('players.save') }}">Export</a></button>
-    <form  type="file" name="path" action="{{ route('players.load') }}">
+    {{-- <form  type="file" name="path" action="{{ route('players.load') }}">
     @csrf
         <button type="submit" class="btn-pl btn-primary">Import data</button>
-    </form>
+    </form> --}}
 </div>

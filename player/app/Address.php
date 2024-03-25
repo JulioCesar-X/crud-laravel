@@ -12,3 +12,4 @@ class Address extends Model
     //     return $this->belongsTo('App\Player');
     // }
 }
+

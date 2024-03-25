@@ -1,4 +1,4 @@
-<form method="GET" action="#">
+<form method="POST" action="#">
     @csrf
     <div class="form-group">
         <label for="name"><strong>Name:</strong></label>
@@ -39,12 +39,10 @@
         <button type="edit" class="mt-2 mb-5 btn-pl btn-primary">
             <a href="{{ route('players.edit',['player' => $player->id]) }}">Editar</a>
         </button>
-        <form method="POST" action="{{ route('players.destroy', ['player' => $player->id]) }}">
+       <form id="delete-form" method="POST" action="{{ route('players.destroy', ['player' => $player->id]) }}">
             @csrf
             @method('DELETE')
-            <button type="submit" class="mt-2 mb-5 btn-pl btn-danger"
-                onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Deletar
-            </button>
+            <button type="submit" class="mt-2 mb-5 btn-pl btn-danger">Deletar</button>
         </form>
     </div>
 </form>

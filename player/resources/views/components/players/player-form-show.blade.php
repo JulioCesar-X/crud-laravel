@@ -37,9 +37,9 @@
     </div>
     <div class="btn-form">
         <button type="edit" class="mt-2 mb-5 btn-pl btn-primary">
-            <a href="{{ route('players.edit',['player' => $player->id]) }}">Editar</a>
+            <a href="{{ url('players/'.$player->id.'/edit') }}">Editar</a>
         </button>
-       <form id="delete-form" method="POST" action="{{ route('players.destroy', ['player' => $player->id]) }}">
+       <form id="delete-form" method="POST" action="{{ url('players/'.$player->id) }}">
             @csrf
             @method('DELETE')
             <button type="submit" class="mt-2 mb-5 btn-pl btn-danger">Deletar</button>

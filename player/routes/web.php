@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlayerController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,30 +19,39 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-
+Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-//rotas para create
-Route::get('/players/create', 'PlayerController@create')->name('players.create');
-Route::post('/players/new', 'PlayerController@store')->name('players.create-player');
-
-//rotas para show e read
-Route::get('/players', 'PlayerController@index')->name('players');
-Route::get('/players/{player}', 'PlayerController@show')->name('players.show');
 
 
-//rota para editar
-Route::get('/players/{player}/edit', 'PlayerController@edit')->name('players.edit');
-Route::put('/players/{player}', 'PlayerController@update')->name('players.update');
 
 
-//rota para deletar
-Route::delete('/players/{player}', 'PlayerController@destroy')->name('players.destroy');
 
-//rota para salvar dados em csv
-Route::get('/export-players', 'PlayerController@export')->name('players.save');
+Route::prefix('players')->group(function () {
+
+    // rotas para show e read
+    Route::get('', 'PlayerController@index');
+
+    Route::group(['middleware' => 'auth'],function () {
+        // Rotas para create
+        Route::get('create', 'PlayerController@create');
+        Route::post('/', 'PlayerController@store');
+        // Rota para editar
+        Route::get('{player}/edit', 'PlayerController@edit');
+        Route::put('{player}', 'PlayerController@update');
+        // Rota para deletar
+        Route::delete('{player}', 'PlayerController@destroy');
+     });
+
+    // Rota para mostrar detalhes do jogador
+    Route::get('{player}', 'PlayerController@show');
+});
+
+// Rota para salvar dados em CSV
+Route::get('players/save', 'PlayerController@export');
+
+
+
 
 // //rota para importar csv
 // dd(Route::post('/import-players/{path}', 'PlayerController@import')->name('players.load'));

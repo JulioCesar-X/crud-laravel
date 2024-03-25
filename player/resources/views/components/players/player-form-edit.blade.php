@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route("players.update",$player->id) }}">
+<form method="POST" action="{{ url("players/".$player->id) }}">
     @csrf
     @method('PUT')
     <div class="form-group">

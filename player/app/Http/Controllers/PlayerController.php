@@ -96,7 +96,7 @@ class PlayerController extends Controller
 
         $player->update($dadosValidados);
 
-        return redirect()->route('players')->with('successo', 'Player alterado com sucesso!');
+        return redirect('players')->with('successo', 'Player alterado com sucesso!');
     }
 
     /**
@@ -105,11 +105,10 @@ class PlayerController extends Controller
      * @param  \App\Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Player $player)
     {
-        $player = Player::findOrFail($id);
         $player->delete();
-        return redirect()->route('players')->with('successo', 'Player excluído com sucesso!');
+        return redirect('players')->with('successo', 'Player excluído com sucesso!');
     }
 
     public function export()

@@ -24,11 +24,11 @@
                 @endif
                 <td class="btn-group vertical-center" role="group" aria-label="Basic example">
 
-                    <a href="{{ route('players.show', ['player' => $player->id]) }}"><button type="button"
+                    <a href="{{ url('players/'.$player->id) }}"><button type="button"
                             class="btn-pl btn-success">Show</button></a>
-                    <a href="{{ route('players.edit', ['player' => $player->id]) }}"><button type="button"
+                    <a href="{{ url("players/".$player->id.'/edit') }}"><button type="button"
                             class="btn-pl btn-warning">Edit</button></a>
-                    <form method="POST" action="{{ route('players.destroy', ['player' => $player->id]) }}">
+                    <form method="POST" action="{{ url('players/'.$player->id) }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="mt-2 mb-5 btn-pl btn-danger"
@@ -41,8 +41,8 @@
 </table>
 <div class="btn-form btn-primary">
     {{ $players->links() }}
-    <button type="button" class="btn-pl btn-primary"><a href="{{ route('players.save') }}">Export</a></button>
-    {{-- <form  type="file" name="path" action="{{ route('players.load') }}">
+    {{-- <button type="button" class="btn-pl btn-primary"><a href="{{ url('players/save') }}">Export</a></button> --}}
+    {{-- <form  type="file" name="path" action="{{ url('players.load') }}">
     @csrf
         <button type="submit" class="btn-pl btn-primary">Import data</button>
     </form> --}}

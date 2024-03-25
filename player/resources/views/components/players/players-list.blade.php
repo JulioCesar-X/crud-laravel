@@ -25,15 +25,19 @@
                 <td class="btn-group vertical-center" role="group" aria-label="Basic example">
 
                     <a href="{{ url('players/'.$player->id) }}"><button type="button"
-                            class="btn-pl btn-success">Show</button></a>
-                    <a href="{{ url("players/".$player->id.'/edit') }}"><button type="button"
-                            class="btn-pl btn-warning">Edit</button></a>
-                    <form method="POST" action="{{ url('players/'.$player->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="mt-2 mb-5 btn-pl btn-danger"
-                            onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Deletar</button>
-                    </form>
+                            class="btn-pl btn-success">Show</button>
+                    </a>
+                    @auth
+                        <a href="{{ url("players/".$player->id.'/edit') }}">
+                            <button type="button" class="btn-pl btn-warning">Edit</button>
+                        </a>
+                        <form method="POST" action="{{ url('players/'.$player->id) }}">
+                            @csrf
+                            @method('DELETE')
+                                <button type="submit" class="mt-2 mb-5 btn-pl btn-danger"
+                                onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Deletar</button>
+                        </form>
+                    @endauth
                 </td>
             </tr>
         @endforeach

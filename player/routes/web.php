@@ -15,17 +15,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
+Route::get('/', 'PlayerController@index');
 Route::get('/home', 'HomeController@index')->name('home');
-
-
-
-
-
 
 Route::prefix('players')->group(function () {
 

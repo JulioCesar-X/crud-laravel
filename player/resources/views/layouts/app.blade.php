@@ -1,8 +1,8 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
          <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('players') }}">
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -50,9 +50,11 @@
                     <li class="nav-item" @if (Request::is('players')) active @endif>
                         <a class="nav-link active" aria-current="page" href="{{ url('players') }}">List Players</a>
                     </li>
+                    @auth
                     <li class="nav-item" @if (Request::is('players/create')) active @endif>
                         <a class="nav-link" href="{{ url('players/create') }}">Add player</a>
                     </li>
+                    @endauth
                 </ul>
             </div>
         </div>

@@ -23,14 +23,14 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+//rotas para create
+Route::get('/players/create', 'PlayerController@create')->name('players.create');
+Route::post('/players/new', 'PlayerController@store')->name('players.create-player');
 
 //rotas para show e read
 Route::get('/players', 'PlayerController@index')->name('players');
 Route::get('/players/{player}', 'PlayerController@show')->name('players.show');
 
-//rotas para create
-Route::get('/players/create', 'PlayerController@create');
-Route::post('players', 'PlayerController@store');
 
 //rota para editar
 Route::get('/players/{player}/edit', 'PlayerController@edit')->name('players.edit');

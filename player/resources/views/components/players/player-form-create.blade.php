@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url('players') }}">
+<form method="POST" action="{{ route('players.create-player') }}">
     @csrf
     <div class="form-group">
         <label for="name"><strong>Name:</strong></label>

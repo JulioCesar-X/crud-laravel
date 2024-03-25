@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PlayersExport;
-use App\Player;
 
 
 class PlayerController extends Controller
@@ -29,7 +29,6 @@ class PlayerController extends Controller
      */
     public function create()
     {
-
         return view('pages.players.create-player');
     }
 
@@ -43,9 +42,9 @@ class PlayerController extends Controller
     {
         $this->validate($request, [
 
-            'name'        => "required|string|min:2|max:25",
-            'address'     => "required|string|",
-            'description' => "required|string|100",
+            'name'        => "required",
+            'address'     => "required",
+            'description' => "required",
             'retired'     => "required"
 
         ]);
@@ -53,9 +52,6 @@ class PlayerController extends Controller
         Player::create($request->all());//criar com todos as colunas
 
         return redirect('players')->with('sucesso',"Player criado com sucesso!");
-
-
-
 
     }
 

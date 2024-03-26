@@ -1,15 +1,25 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportRequest;
+use App\Import\PlayerImport;
+use App\Export\PlayerExport;
 use App\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\PlayersExport;
+
 
 
 class PlayerController extends Controller
 {
+
+    protected $player_import;
+    protected $player_export;
+
+    public function __construct(PlayerImport $player_import, PlayerExport $player_export) {
+        $this->player_import = $player_import;
+        $this->player_export = $player_export;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -113,8 +123,41 @@ class PlayerController extends Controller
 
     public function export()
     {
-        return Excel::download(new PlayersExport, 'players.csv', \Maatwebsite\Excel\Excel::CSV);
 
+
+    }
+    public function import()
+    {
+        return view('pages.players.import');
+
+    }
+    public function storeImport(ImportRequest $request)
+    {
+        try {
+
+            // Aqui você pode processar o arquivo conforme necessário, por exemplo, passando-o para o método allData do seu serviço de importação
+            $notificationData = $this->player_import->allData($request);
+
+            // Criando a mensagem de sucesso com base nos dados de notificação
+            $notification = [
+                'title' => 'Success',
+                'message' => 'Imported ' . $notificationData['created'] . ' data created, ' . $notificationData['updated'] . ' data updated.',
+                'alert-type' => 'success'
+            ];
+
+            // Redirecionando para a página de jogadores com a mensagem de sucesso
+            return redirect('players')->with($notification);
+        } catch (\Exception $e) {
+            // Se ocorrer uma exceção, cria uma mensagem de erro
+            $notification = [
+                'title' => 'Error',
+                'message' => 'not_imported' . ': ' . $e->getMessage(),
+                'alert-type' => 'danger'
+            ];
+
+            // Redirecionando de volta com a mensagem de erro e mantendo os dados de entrada anteriores
+            return back()->with($notification)->withInput();
+        }
     }
 
 }

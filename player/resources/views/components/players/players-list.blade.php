@@ -43,11 +43,7 @@
         @endforeach
     </tbody>
 </table>
-<div class="btn-form btn-primary">
+<div>
     {{ $players->links() }}
-    {{-- <button type="button" class="btn-pl btn-primary"><a href="{{ url('players/save') }}">Export</a></button> --}}
-    {{-- <form  type="file" name="path" action="{{ url('players.load') }}">
-    @csrf
-        <button type="submit" class="btn-pl btn-primary">Import data</button>
-    </form> --}}
+    <button class="btn-pl btn-primary"><a href="{{ url('players/import') }}">Import</a></button>
 </div>

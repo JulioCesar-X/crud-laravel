@@ -43,7 +43,4 @@
         @endforeach
     </tbody>
 </table>
-<div>
-    {{ $players->links() }}
-    <button class="btn-pl btn-primary"><a href="{{ url('players/import') }}">Import</a></button>
-</div>
+

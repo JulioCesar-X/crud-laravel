@@ -30,8 +30,15 @@
 @component('master.footer')
 @endcomponent
 
-<script src="{!! asset('js/app.js') !!}" type="text/javascript"></script>
+<script src="{!! asset('js/app.js') !!}" type="text/javascript"> </script>
 @yield('scripts')
-
+<script>
+    function exportWithDelay(url) {
+        // Aguardar 500 milissegundos (0,5 segundos) antes de redirecionar
+        setTimeout(function() {
+            window.location.href = url;
+        }, 500); // Redirecionar após 0,5 segundos
+    }
+</script>
 </body>
 </html>

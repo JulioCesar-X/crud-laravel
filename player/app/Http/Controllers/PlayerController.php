@@ -1,25 +1,21 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ImportRequest;
-use App\Import\PlayerImport;
-use App\Export\PlayerExport;
 use App\Player;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
+use Illuminate\Support\Facades\Session;
 
+use App\Exports\PlayersExport;
+use Maatwebsite\Excel\Facades\Excel;
+//API extension para dateTime
+use Carbon\Carbon;
 
 class PlayerController extends Controller
 {
 
-    protected $player_import;
-    protected $player_export;
-
-    public function __construct(PlayerImport $player_import, PlayerExport $player_export) {
-        $this->player_import = $player_import;
-        $this->player_export = $player_export;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +57,7 @@ class PlayerController extends Controller
 
         Player::create($request->all());//criar com todos as colunas
 
-        return redirect('players')->with('sucesso',"Player criado com sucesso!");
+        return redirect('players')->with('status',"Player criado com sucesso!");
 
     }
 
@@ -106,7 +102,7 @@ class PlayerController extends Controller
 
         $player->update($dadosValidados);
 
-        return redirect('players')->with('successo', 'Player alterado com sucesso!');
+        return redirect('players')->with('status', 'Player alterado com sucesso!');
     }
 
     /**
@@ -118,46 +114,57 @@ class PlayerController extends Controller
     public function destroy(Player $player)
     {
         $player->delete();
-        return redirect('players')->with('successo', 'Player excluído com sucesso!');
+        return redirect('players')->with('status', 'Player excluído com sucesso!');
     }
 
     public function export()
     {
 
+        $fileName = "players_" . Carbon::now()->format('Y-m-d') . ".csv";
+
+        // Definir a mensagem de sucesso na sessão
+        Session::flash('status', "Arquivo $fileName gerado com sucesso!");
+
+        $response = Excel::download(new PlayersExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+
+        return $response;
 
     }
+
     public function import()
     {
         return view('pages.players.import');
 
     }
-    public function storeImport(ImportRequest $request)
-    {
-        try {
 
-            // Aqui você pode processar o arquivo conforme necessário, por exemplo, passando-o para o método allData do seu serviço de importação
-            $notificationData = $this->player_import->allData($request);
 
-            // Criando a mensagem de sucesso com base nos dados de notificação
-            $notification = [
-                'title' => 'Success',
-                'message' => 'Imported ' . $notificationData['created'] . ' data created, ' . $notificationData['updated'] . ' data updated.',
-                'alert-type' => 'success'
-            ];
+//     public function storeImport(ImportRequest $request)
+//     {
+//         try {
 
-            // Redirecionando para a página de jogadores com a mensagem de sucesso
-            return redirect('players')->with($notification);
-        } catch (\Exception $e) {
-            // Se ocorrer uma exceção, cria uma mensagem de erro
-            $notification = [
-                'title' => 'Error',
-                'message' => 'not_imported' . ': ' . $e->getMessage(),
-                'alert-type' => 'danger'
-            ];
+//             // Aqui você pode processar o arquivo conforme necessário, por exemplo, passando-o para o método allData do seu serviço de importação
+//             $notificationData = $this->player_import->allData($request);
 
-            // Redirecionando de volta com a mensagem de erro e mantendo os dados de entrada anteriores
-            return back()->with($notification)->withInput();
-        }
-    }
+//             // Criando a mensagem de sucesso com base nos dados de notificação
+//             $notification = [
+//                 'title' => 'Success',
+//                 'message' => 'Imported ' . $notificationData['created'] . ' data created, ' . $notificationData['updated'] . ' data updated.',
+//                 'alert-type' => 'success'
+//             ];
+
+//             // Redirecionando para a página de jogadores com a mensagem de sucesso
+//             return redirect('players')->with($notification);
+//         } catch (\Exception $e) {
+//             // Se ocorrer uma exceção, cria uma mensagem de erro
+//             $notification = [
+//                 'title' => 'Error',
+//                 'message' => 'not_imported' . ': ' . $e->getMessage(),
+//                 'alert-type' => 'danger'
+//             ];
+
+//             // Redirecionando de volta com a mensagem de erro e mantendo os dados de entrada anteriores
+//             return back()->with($notification)->withInput();
+//         }
+//     }
 
 }

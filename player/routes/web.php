@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -27,6 +26,7 @@ Route::prefix('players')->group(function () {
     Route::get('import', 'PlayerController@import'); // tela de pedido
     Route::post('store-import', 'PlayerController@storeImport'); //implementa na db
 
+    //grupo de rotas para os autenticados-VIPs
     Route::group(['middleware' => 'auth'],function () {
         // Rotas para create
         Route::get('create', 'PlayerController@create');
@@ -36,11 +36,14 @@ Route::prefix('players')->group(function () {
         Route::put('{player}', 'PlayerController@update');
         // Rota para deletar
         Route::delete('{player}', 'PlayerController@destroy');
+
+        //  Rota para salvar dados em CSV
+        Route::get('export', 'PlayerController@export');
      });
 
      // Rota para mostrar detalhes do jogador
      Route::get('{player}', 'PlayerController@show');
-     
+
     // rotas para show e read
     Route::get('', 'PlayerController@index');
 
@@ -49,6 +52,4 @@ Route::prefix('players')->group(function () {
 
 
 
-// // Rota para salvar dados em CSV
-// Route::get('players/export/{player?}', 'PlayerController@export')->name('players.export');
 

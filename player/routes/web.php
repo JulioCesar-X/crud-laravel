@@ -41,8 +41,8 @@ Route::prefix('players')->group(function () {
 
      // Rota para mostrar detalhes do jogador
      Route::get('{player}', 'PlayerController@show');
-
-    // rotas para show e read
+    
+     // rotas para show e read
     Route::get('', 'PlayerController@index');
 
 

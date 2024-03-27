@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\Player;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class PlayersExport implements FromCollection, WithStrictNullComparison
+class PlayersExport implements FromCollection, WithStrictNullComparison, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -15,18 +16,18 @@ class PlayersExport implements FromCollection, WithStrictNullComparison
     {
         return Player::all();
     }
-    public function headings(): array
-    {
+
+    public function headings(): array {
         // Retorna os cabeçalhos das colunas
         return [
-
             'ID',
             'Name',
             'Address',
+            'Description',
             'Retired',
-            'Create_date',
-            'Update_date'
+            '',
+            'Date'
         ];
     }
-    
+
 }

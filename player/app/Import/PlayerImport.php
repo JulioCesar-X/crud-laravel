@@ -5,9 +5,10 @@ namespace App\Import;
 use App\Player;
 use Exception;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class PlayerImport
+class PlayerImport 
 {
     protected $Player;
 

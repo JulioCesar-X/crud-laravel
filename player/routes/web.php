@@ -14,13 +14,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-
 Auth::routes();
 Route::get('/', 'PlayerController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('players')->group(function () {
-
 
     //rotas para importação
     Route::get('import', 'PlayerController@import'); // tela de pedido

@@ -28,6 +28,5 @@
 </div>
 <div>
     {{ $players->links() }}
-
 </div>
 @endsection

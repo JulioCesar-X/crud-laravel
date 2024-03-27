@@ -19,7 +19,7 @@
                         @endif
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-outline btn-primary" >Import</button>
+                        <button type="submit" class="btn btn-outline btn-primary">Import</button>
                     </div>
                 </form>
             </div>

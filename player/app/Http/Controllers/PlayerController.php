@@ -126,7 +126,7 @@ class PlayerController extends Controller
         Session::flash('status', "Arquivo $fileName gerado com sucesso!");
 
         $response = Excel::download(new PlayersExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
-
+        
         return $response;
 
     }

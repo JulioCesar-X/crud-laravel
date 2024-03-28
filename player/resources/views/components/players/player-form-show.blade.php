@@ -16,7 +16,7 @@
     </div>
     <div class="form-group">
         <label for="address"><strong>Type your address:</strong></label>
-        <input name = "address" type = "address" class="form-control" id="address" value="{{ $player->address }}" disabled>
+        <input name = "address_id" type = "address" class="form-control" id="address" value="{{ $player->address->address }}" disabled>
     </div>
     <div>
         <label for="description"><strong>Description:</strong></label>
@@ -35,6 +35,11 @@
             </div>
         </div>
     </div>
+    @if ($player->image)
+    <div class="mb-3 justify-content-center">
+        <img class="w-100 img-responsive" src="{{ asset('storage/'.$player->image) }}" alt="" title="">
+    </div>
+    @endif
     <div class="btn-form">
         <button type="edit" class="mt-2 mb-5 btn-pl btn-primary">
             <a href="{{ url('players/'.$player->id.'/edit') }}">Editar</a>

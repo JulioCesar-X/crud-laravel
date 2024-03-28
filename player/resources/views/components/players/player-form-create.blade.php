@@ -1,5 +1,4 @@
-<form method="POST" action="{{ url('players') }}">
-    @method('POST')
+<form method="POST" action="{{ url('players') }}" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="name"><strong>Name:</strong></label>
@@ -16,8 +15,12 @@
         @enderror
     </div>
     <div class="form-group">
-        <label for="address"><strong>Type your address:</strong></label>
-        <input name = "address" type="address" placeholder="Type your address" class="form-control" id="address">
+        <label for="address"><strong>Select your address:</strong></label>
+        <select name="address_id" id="address" class="form-control">
+            @foreach ($addresses as $address )
+                <option value="{{ $address->id }}">{{ $address->address }}</option>
+            @endforeach
+        </select>
     </div>
     <div>
         <label for="description"><strong>Description:</strong></label>
@@ -35,6 +38,15 @@
                 <label for="form-check-inline">No</label>
             </div>
         </div>
+    </div>
+    <div class="form-group">
+        <label for="image">Choose a image: </label>
+        <input type="file" id="image" name="image" autocomplete="image" class="form-control @error('file') is-invalid @enderror" value={{ old('image') }} required>
+            @error('image')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
     </div>
     <div class="btn-form">
         <button type="submit" class="mt-2 mb-5 btn btn-primary">Submit</button>

@@ -15,8 +15,9 @@ class CreatePlayersTable extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
+            $table->string('image')->nullable();
             $table->string('name');
-            $table->string('address');
+            $table->foreignId('address_id')->constrained();
             $table->string('description');
             $table->boolean('retired');
             $table->softDeletes(); //habilitar o delete do crud

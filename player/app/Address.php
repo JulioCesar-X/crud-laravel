@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    // function player()
-    // {
+    function player()
+    {
 
-    //     return $this->belongsTo('App\Player');
-    // }
+        return $this->belongsTo('App\Player');
+    }
 }
 

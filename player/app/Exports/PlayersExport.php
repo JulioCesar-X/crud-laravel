@@ -25,8 +25,8 @@ class PlayersExport implements FromCollection, WithStrictNullComparison, WithHea
             'Address',
             'Description',
             'Retired',
-            '',
-            'Date'
+            'DateCreate',
+            'DateUpdate'
         ];
     }
 

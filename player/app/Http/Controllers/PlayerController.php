@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Player;
+use App\Address;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -9,9 +10,14 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
 use App\Exports\PlayersExport;
+use App\Imports\PlayersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
+
 //API extension para dateTime
 use Carbon\Carbon;
+
+
 
 class PlayerController extends Controller
 {
@@ -35,7 +41,9 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        return view('pages.players.create-player');
+        $addresses = Address::all();
+
+        return view('pages.players.create-player', ['addresses' => $addresses ]);
     }
 
     /**
@@ -51,11 +59,36 @@ class PlayerController extends Controller
             'name'        => "required",
             'address'     => "required",
             'description' => "required",
-            'retired'     => "required"
+            'retired'     => "required",
+            'image'       => "required|image|mimes:jpeg,png,jpg,gif,svg"
 
         ]);
 
-        Player::create($request->all());//criar com todos as colunas
+        // Player::create($request->all());//criar com todos as colunas
+
+        $player                = new Player();
+        $player->name          = $request->name;
+        $player->address       = $request->address;
+        $player->description   = $request->description;
+        $player->retired       = $request->retired;
+        $player->save();
+
+        if ($request->file('image')) {
+
+            $imagePath = $request->file('image');
+
+            //define name
+            $imageName = $player->id.'_'.time().'_'.$imagePath->getClientOriginalName();
+
+            //save on storage
+            $path = $request->file('image')->storeAs('images/players/'.$player->id, $imageName, 'public');
+
+            //save image path
+            $player->image = $path;
+
+        }
+
+        $player->save();
 
         return redirect('players')->with('status',"Player criado com sucesso!");
 
@@ -80,7 +113,9 @@ class PlayerController extends Controller
      */
     public function edit(Player $player)
     {
-        return view('pages.players.edit-player', ['player' => $player]);
+        $addresses = Address::all();
+
+        return view('pages.players.edit-player', ['player' => $player, 'addresses' => $addresses ]);
     }
 
     /**
@@ -97,7 +132,8 @@ class PlayerController extends Controller
             'name'        => "required|string|min:2|max:25",
             'address'     => "required|string|",
             'description' => "required",
-            'retired'     => "required"
+            'retired'     => "required",
+            'image'     => "required"
         ]);
 
         $player->update($dadosValidados);
@@ -113,20 +149,27 @@ class PlayerController extends Controller
      */
     public function destroy(Player $player)
     {
+        Storage::deleteDirectory('public/images/players/'.$player->id);
+
+        //for specific file
+        Storage::delete('public/'.$player->id);
+
+
         $player->delete();
         return redirect('players')->with('status', 'Player excluído com sucesso!');
     }
 
-    public function export()
-    {
+
+
+
+    public function export(){
 
         $fileName = "players_" . Carbon::now()->format('Y-m-d') . ".csv";
 
-        // Definir a mensagem de sucesso na sessão
         Session::flash('status', "Arquivo $fileName gerado com sucesso!");
 
         $response = Excel::download(new PlayersExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
-        
+
         return $response;
 
     }
@@ -138,33 +181,100 @@ class PlayerController extends Controller
     }
 
 
-//     public function storeImport(ImportRequest $request)
-//     {
-//         try {
+    public function storeImport(Request $request){
+        try {
 
-//             // Aqui você pode processar o arquivo conforme necessário, por exemplo, passando-o para o método allData do seu serviço de importação
-//             $notificationData = $this->player_import->allData($request);
 
-//             // Criando a mensagem de sucesso com base nos dados de notificação
-//             $notification = [
-//                 'title' => 'Success',
-//                 'message' => 'Imported ' . $notificationData['created'] . ' data created, ' . $notificationData['updated'] . ' data updated.',
-//                 'alert-type' => 'success'
-//             ];
+            $notificationData = $this->allData($request);
 
-//             // Redirecionando para a página de jogadores com a mensagem de sucesso
-//             return redirect('players')->with($notification);
-//         } catch (\Exception $e) {
-//             // Se ocorrer uma exceção, cria uma mensagem de erro
-//             $notification = [
-//                 'title' => 'Error',
-//                 'message' => 'not_imported' . ': ' . $e->getMessage(),
-//                 'alert-type' => 'danger'
-//             ];
+            $notification = [
+                'status' => 'Imported' . $notificationData['created'] . ' data created, ' . $notificationData['updated'] . ' data updated.',
+                'alert-type' => 'success'
 
-//             // Redirecionando de volta com a mensagem de erro e mantendo os dados de entrada anteriores
-//             return back()->with($notification)->withInput();
-//         }
-//     }
+            ];
+
+
+            return redirect('players')->with($notification);
+
+        } catch (\Exception $e) {
+
+            $notification = [
+                'status' => 'not_imported' . ': ' . $e->getMessage(),
+                'alert-type' => 'danger'
+            ];
+
+
+            return redirect('players')->with($notification);
+        }
+    }
+
+    public function allData(Request $request){
+
+        $array = (new PlayersImport)->toArray($request->file('file'));
+
+        if ($array) {
+
+            $rowCount = Player::count();
+
+            $created = $rowCount - 1;
+            $updated = 0;
+
+            $line = 0;
+
+            foreach ($array as $item) {
+
+                // dd(count($item)); //10 ??
+
+                if (count($item) == 10) {
+                    if ($line > 0) {
+
+                        $id = $item[0];
+                        $Player = Player::where('id', $id)->first();
+
+                        if ($Player !== null) {
+
+                            $Player->update([
+                                'name' => $item[1],
+                                'address' => $item[2],
+                                'description' => $item[3],
+                                'retired' => $item[4],
+                            ]);
+                            $updated++;
+
+                        } else {
+
+                            Player::create([
+                                'id' => $id,
+                                'name' => $item[1],
+                                'address' => $item[2],
+                                'description' => $item[3],
+                                'retired' => $item[4],
+                            ]);
+                            $created++;
+                        }
+                    }
+
+                    $line++;
+
+                } else {
+                    throw new \Exception('Error: columns not sure');
+                }
+            }
+
+            $notification = [
+                'status' => "worksheet_imported",
+                'created' => $created,
+                'updated' => $updated
+            ];
+
+            return $notification;
+
+        } else {
+
+            throw new \Exception('Error: Player import failed');
+        }
+
+
+    }
 
 }

@@ -14,12 +14,13 @@ class Player extends Model
         "name",
         "address",
         "description",
-        "retired"
+        "retired",
+        "image"
 
     ];
 
-    // function address()
-    // {
-    //     return $this->belongsTo('App\Address');
-    // }
+    function address()
+    {
+        return $this->belongsTo('App\Address');
+    }
 }

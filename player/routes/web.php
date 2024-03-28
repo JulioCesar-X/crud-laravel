@@ -20,15 +20,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('players')->group(function () {
 
-    //rotas para importação
-    Route::get('import', 'PlayerController@import'); // tela de pedido
-    Route::post('store-import', 'PlayerController@storeImport'); //implementa na db
+
 
     //grupo de rotas para os autenticados-VIPs
     Route::group(['middleware' => 'auth'],function () {
         // Rotas para create
         Route::get('create', 'PlayerController@create');
-        Route::post('/', 'PlayerController@store');
+        Route::post('', 'PlayerController@store');
         // Rota para editar
         Route::get('{player}/edit', 'PlayerController@edit');
         Route::put('{player}', 'PlayerController@update');
@@ -37,11 +35,14 @@ Route::prefix('players')->group(function () {
 
         //  Rota para salvar dados em CSV
         Route::get('export', 'PlayerController@export');
+        //rotas para importação
+        Route::get('import', 'PlayerController@import'); // tela de pedido
+        Route::post('store-import', 'PlayerController@storeImport'); //implementa na db
      });
 
      // Rota para mostrar detalhes do jogador
      Route::get('{player}', 'PlayerController@show');
-    
+
      // rotas para show e read
     Route::get('', 'PlayerController@index');
 

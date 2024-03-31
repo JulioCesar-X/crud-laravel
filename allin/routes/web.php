@@ -21,9 +21,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('person', PersonController::class);
-Route::resource('bicycle', BicycleController::class);
-Route::resource('country', CountryController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('person', PersonController::class);
+    Route::resource('bicycle', BicycleController::class);
+    Route::resource('country', CountryController::class);
+});
 
 //caminhos URI ou NAME
 /*

@@ -11,11 +11,12 @@ class Country extends Model
 
     protected $fillable = [
         'name',
+        'image'
     ];
 
     public function people(){
 
         return $this->hasMany('App\Person');
     }
-    
+
 }

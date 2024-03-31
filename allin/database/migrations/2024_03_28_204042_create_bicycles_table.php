@@ -15,12 +15,12 @@ class CreateBicyclesTable extends Migration
     {
         Schema::create('bicycles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->nullable();
+            $table->foreignId('person_id');
             $table->string('brand');
             $table->string('model');
             $table->string('color');
             $table->string('price');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

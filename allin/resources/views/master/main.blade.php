@@ -13,13 +13,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{!! asset('css/style.css') !!}" media="all" rel="stylesheet" type="text/css" />
     @yield('styles')
 </head>
 <body>
 @component('master.header')
 @endcomponent
-
 <main>
+
 @yield('content')
 </main>
 
@@ -27,13 +28,6 @@
 @endcomponent
 <script src="{!! asset('js/app.js') !!}" type="text/javascript"> </script>
 @yield('scripts')
-<script>
-    function exportWithDelay(url) {
-        // Aguardar 500 milissegundos (0,5 segundos) antes de redirecionar
-        setTimeout(function() {
-            window.location.href = url;
-        }, 500); // Redirecionar após 0,5 segundos
-    }
-</script>
+
 </body>
 </html>

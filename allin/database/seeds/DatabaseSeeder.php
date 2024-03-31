@@ -16,10 +16,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CountrySeeder::class);
 
-        // Criar 10 usuários
-        factory(Person::class, 100)->create()->each(function ($person) {
 
-            // Criar duas bicicletas para cada usuário
+        factory(Person::class, 100)->create()->each(function ($person) {
             factory(Bicycle::class, 2)->create(['person_id' => $person->id]);
         });
     }

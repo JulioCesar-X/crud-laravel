@@ -14,11 +14,12 @@ class Person extends Model
         'country_id',
         'first_name',
         'last_name',
-        'birth_date'
+        'birth_date',
+        
     ];
 
     public function country() {
-        
+
         return $this->belongsTo('App\Country');
     }
     public function bicycles() {

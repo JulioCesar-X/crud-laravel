@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bicycle;
+use App\Person;
 use Illuminate\Http\Request;
 
 class BicycleController extends Controller
@@ -14,7 +15,7 @@ class BicycleController extends Controller
      */
     public function index()
     {
-        $bicycles = Person::paginate(40);
+        $bicycles = Bicycle::paginate(40);
 
         return view("pages.bicycle.index", [ 'bicycles' => $bicycles ]);
     }
@@ -26,7 +27,10 @@ class BicycleController extends Controller
      */
     public function create()
     {
-        return view('pages.bicycle.create');
+        $people = Person::all();
+        $bicycles = Bicycle::all();
+
+        return view('pages.bicycle.create',['people' => $people,'bicycles' => $bicycles]);
     }
 
     /**
@@ -70,7 +74,7 @@ class BicycleController extends Controller
         }
         $bicycle->save();
 
-        return redirect('index')->with('sucess',"Bicycle successful!");
+        return redirect('bicycle')->with('Success',"Bicycle successful!");
     }
 
     /**
@@ -128,7 +132,7 @@ class BicycleController extends Controller
         }
         $bicycle->update($request->all());
 
-        return redirect('index')->with('success', 'Bicycle successfully changed!');
+        return redirect('bicycle')->with('Success', 'Bicycle successfully changed!');
     }
 
     /**
@@ -144,6 +148,6 @@ class BicycleController extends Controller
         // //for specific file
         // Storage::delete('public/'.$bicycle->id);
         $bicycle->delete();
-        return redirect('index')->with('Success', 'Bicycle deleted Successfully!');
+        return redirect('bicycle')->with('Success', 'Bicycle deleted Successfully!');
     }
 }

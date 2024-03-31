@@ -14,7 +14,7 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::all();
+        $countries = Country::paginate(20);
 
         return view("pages.country.index", [ 'countries' => $countries ]);
     }
@@ -39,13 +39,27 @@ class CountryController extends Controller
     {
         $this->validate($request, [
             'name'   =>"required",
+            'image'  =>"required",
         ]);
 
         $country = new Country();
         $country->name = $request->name;
         $country->save();
 
-        return redirect('index')->with('Success','Country registered Successfully');
+        if ($request->file('image')) {
+
+            $imagePath = $request->file('image');
+            //define name
+            $imageName = $country->id.'_'.time().'_'.$imagePath->getClientOriginalName();
+            //save on storage
+            $path = $request->file('image')->storeAs('images/countries/'.$country->id, $imageName, 'public');
+
+            $country->image = $request->file('image');
+        }
+
+        $country->save();
+
+        return redirect('country')->with('Success','Country registered Successfully');
     }
 
     /**
@@ -95,6 +109,6 @@ class CountryController extends Controller
     public function destroy(Country $country)
     {
         $country->delete();
-        return redirect('index')->with('Success', 'Country deleted Successfully!');
+        return redirect('country')->with('Success', 'Country deleted Successfully!');
     }
 }

@@ -89,6 +89,7 @@ class PersonController extends Controller {
     */
 
     public function show( Person $person ) {
+
         return view( 'pages.person.show', [ 'person' => $person ] );
     }
 
@@ -100,6 +101,7 @@ class PersonController extends Controller {
     */
 
     public function edit( Person $person ) {
+
         $countries = Country::all();
         $bicycles  = Bicycle::inRandomOrder()->limit( 15 )->get();
 

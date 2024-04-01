@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class=" row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="margin-top">
                     @if (session('Success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -12,7 +12,7 @@
                             </button>
                         </div>
                     @endif
-                    @component('components.form-create.country')
+                    @component('components.form-create.country',[ 'countries' => $countries ])
                     @endcomponent
                 </div>
             </div>

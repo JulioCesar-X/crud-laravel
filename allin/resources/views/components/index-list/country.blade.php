@@ -13,10 +13,10 @@
             @forelse ($countries as $country)
                 <tr>
                     <th scope="row">{{ $country->id }}</th>
-                    <td>
+                    <td class="image">
                     @if ($country->image)
                     <div>
-                        <img class="w-100 img-responsive" src="{{ asset('storage/'.$country->image) }}" alt="" title="">
+                        <img class="w-100 img-responsive" src="{{ $country->image }}" alt="" title="">
                     </div>
                     @else
                     <p>
@@ -27,6 +27,9 @@
                     <td class="btn-group" role="group" aria-label="Basic example">
                         <div class="row actions">
                             @auth
+                                <a href="{{ url('country/' . $country->id) }}">
+                                    <button type="button" class="btn-actions">Show</button>
+                                </a>
                                 <a href="{{ url('country/' . $country->id . '/edit') }}">
                                     <button type="button" class="btn-actions">Edit</button>
                                 </a>
@@ -34,7 +37,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-actions"
-                                        onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Delete
+                                        onclick="return confirm('Are you sure you want to exclude this country?')">Delete
                                     </button>
                                 </form>
                             @endauth

@@ -31,7 +31,7 @@
                     <td>{{ $person->birth_date }}</td>
 
                     @if ($person->country)
-                        <td>{{ $person->country->name }}</td>
+                        <td><img src="{{ $person->country->image }}" alt="flag"></td>
                     @else
                         <td>N/A</td>
                     @endif
@@ -43,7 +43,7 @@
                                         <td class="inline"><strong>{{ $bicycle->model }}</strong></td>
                                         <td class="inline">
                                             <div id="color-circle" class="col-md-3"
-                                                style="border: 5px solid {{$bicycle->color}}; border-style: dashed;">
+                                                style="border: 5px solid {{ $bicycle->color }}; border-style: dashed;">
                                                 <i class="bi bi-bicycle"></i>
                                             </div>
                                         </td>
@@ -67,7 +67,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-actions"
-                                        onclick="return confirm('Tem certeza que deseja excluir este jogador?')">Delete
+                                        onclick="return confirm('Are you sure you want to delete this person?')">Delete
                                     </button>
                                 </form>
                             @endauth

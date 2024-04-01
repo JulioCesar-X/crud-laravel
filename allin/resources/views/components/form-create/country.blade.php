@@ -1,22 +1,14 @@
 <form method="POST" action="{{ url('country') }}" enctype="multipart/form-data">
+    @method('POST')
     @csrf
     <div class="form-group">
-        <label for="name"><strong>Name:</strong></label>
-        <input type="text" id="name" name="name" autocomplete="name" placeholder="Type the name"
-            class="form-control         @error('name') is-invalid @enderror" value="{{ old('name') }}" required
-            aria-describedby="namelHelp">
-
+        <label for="name"><strong>Select a Country</strong></label>
+        <select name="name" id="name" class="form-control">
+            @foreach ($countries as $country)
+                <option value="{{ $country->get('admin') }}">{{ $country->get('admin') }}</option>
+            @endforeach
+        </select>
         @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-    </div>
-    <div class="form-group">
-        <label for="image">Choose a image: </label>
-        <input type="file" id="image" name="image" autocomplete="image"
-            class="form-control @error('file') is-invalid @enderror" value={{ old('image') }} required>
-        @error('image')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>

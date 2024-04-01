@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url('person/' . $person->id) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ url('person/'.$person->id) }}" enctype="multipart/form-data">
     @method('PUT')
     @csrf
     <div class="form-group">
@@ -35,9 +35,13 @@
     </div>
     <div class="form-group">
         <label for="country"><strong>Select your Country:</strong></label>
-        <select name="country_id" id="country" class="form-control" value="{{ $person->country->name }}">
-            @foreach ($countries as $country)
-                <option value="{{ $country->id }}">{{ $country->name }}</option>
+        <select name="country_id" id="country" class="form-control">
+            @foreach ($countries as $newCountry)
+                @if ($person->country)
+                <option value="{{ $newCountry->id }}" @if ($person->country->name == $newCountry->name) selected @endif>{{ $newCountry->name }}</option>
+                @else
+                <option value="{{ $newCountry->id }}">{{ $newCountry->name }}</option>
+                @endif
             @endforeach
         </select>
     </div>
